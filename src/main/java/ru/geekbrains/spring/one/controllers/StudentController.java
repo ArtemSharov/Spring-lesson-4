@@ -26,7 +26,7 @@ public class StudentController {
         model.addAttribute("students", students);
         return "index";
     }
-
+/*
     @GetMapping("/students/{id}")
     public String showStudentInfo(@PathVariable(name = "id") Long id, Model model) {
         Optional<Student> student = studentService.findOneById(id);
@@ -35,6 +35,18 @@ public class StudentController {
         }
         return "student_info";
     }
+
+ */
+
+    @GetMapping("/students")
+    public String showStudentInfo(@RequestParam Long id, Model model) {
+        Optional<Student> student = studentService.findOneById(id);
+        if (student.isPresent()) {
+            model.addAttribute("student", student.get());
+        }
+        return "student_info";
+    }
+
 
     // [http://localhost:8189/app]/students/creator
     @GetMapping("/students/create")
@@ -73,6 +85,26 @@ public class StudentController {
     @GetMapping("/students/delete/{id}")
     public String deleteStudentById(@PathVariable Long id) {
         studentService.deleteById(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/students/increment/{id}")
+    public String incrementScore(@PathVariable Long id) {
+        Optional<Student> student = studentService.findOneById(id);
+        if (student.isPresent()) {
+            studentService.incrementScore(id);
+
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/students/decrement/{id}")
+    public String decrementScore(@PathVariable Long id) {
+        Optional<Student> student = studentService.findOneById(id);
+        if (student.isPresent()) {
+            studentService.decrementScore(id);
+
+        }
         return "redirect:/";
     }
 }
