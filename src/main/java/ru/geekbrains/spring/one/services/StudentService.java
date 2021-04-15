@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.spring.one.model.Student;
 import ru.geekbrains.spring.one.repositories.StudentRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +37,23 @@ public class StudentService {
 
     public double getAverageScore() {
         return studentRepository.findAll().stream().mapToInt(Student::getScore).average().getAsDouble();
+    }
+
+    public void incrementScore(Long id){
+        Student s = studentRepository.findOneById(id).orElse(new Student());
+        int score = 0;
+        score = s.getScore();
+        if(score >= -1 && score <= 99) {
+            s.setScore(++score);
+        }
+    }
+
+    public void decrementScore(Long id){
+        Student s = studentRepository.findOneById(id).orElse(new Student());
+        int score = 0;
+        score = s.getScore();
+        if(score >= 1 && score <= 101) {
+            s.setScore(--score);
+        }
     }
 }
